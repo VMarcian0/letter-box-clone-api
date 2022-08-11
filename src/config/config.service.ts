@@ -47,16 +47,23 @@ class ConfigService {
     };
   }
 
+  public getJwtConfig(): string{
+    return this.getValue('JWT_SECRET');
+  }
+
 }
 
 const configService = new ConfigService(process.env)
   .ensureValues([
+    // Database
     'DB_TYPE',
     'DB_HOST',
     'DB_PORT',
     'DB_USERNAME',
     'DB_PASSWORD',
-    'DB_NAME'
+    'DB_NAME',
+    // JWT
+    'JWT_SECRET'
   ]);
 
 export { configService };

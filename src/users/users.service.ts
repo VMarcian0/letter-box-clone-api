@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,7 +16,7 @@ export class UsersService {
         if(user){
             return user
         }
-        throw new HttpException('User with the given email not found', HttpStatus.NOT_FOUND);
+        throw new NotFoundException();
     }
 
     async showById(id: string): Promise<Users> {
@@ -30,9 +30,12 @@ export class UsersService {
     async findById(id: string){
         const user = await this.usersRepository.findOneBy({id})
         if(user){
-            return user
+            delete user?.password;
+            delete user?.email;
+
+            return user;
         }
-        throw new HttpException('User with the given id not found', HttpStatus.NOT_FOUND);
+        throw new NotFoundException();
     }
 
     async create(userData: CreateUserDto){
