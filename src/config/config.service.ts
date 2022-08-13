@@ -1,6 +1,7 @@
 // src/config/config.service.ts
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'path';
+import { MovieDbConfigType } from './types/movie-db.config.type';
 
 require('dotenv').config();
 
@@ -51,6 +52,15 @@ class ConfigService {
     return this.getValue('JWT_SECRET');
   }
 
+  public getMovieDbConfig(): MovieDbConfigType{
+    const config : MovieDbConfigType = {
+      apiKey:this.getValue('MOVIE_DB_APIKEY'),
+      baseUrl:this.getValue('MOVIE_DB_BASEURL'),
+      defaultLanguage:this.getValue('MOVIE_DB_DEFAULT_LANGUAGE')
+    }
+    return config;
+  } 
+
 }
 
 const configService = new ConfigService(process.env)
@@ -63,7 +73,12 @@ const configService = new ConfigService(process.env)
     'DB_PASSWORD',
     'DB_NAME',
     // JWT
-    'JWT_SECRET'
+    'JWT_SECRET',
+    // Services
+    // MovieDbConfig
+    'MOVIE_DB_BASEURL',
+    'MOVIE_DB_APIKEY',
+    'MOVIE_DB_DEFAULT_LANGUAGE',
   ]);
 
 export { configService };

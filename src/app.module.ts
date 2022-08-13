@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { configService } from './config/config.service';
 import { AuthModule } from './auth/auth.module';
+import { MovieDBService } from './services/moviedb/moviedb.service';
+import { HttpModule } from '@nestjs/axios';
+import { MoviesController } from './movies/movies.controller';
 
 
 @Module({
@@ -16,9 +19,10 @@ import { AuthModule } from './auth/auth.module';
     }),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     UsersModule,
-    AuthModule
+    AuthModule,
+    HttpModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, MoviesController],
+  providers: [AppService, MovieDBService],
 })
 export class AppModule {}
