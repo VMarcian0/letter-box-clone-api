@@ -1,7 +1,21 @@
-import { IsDefined, IsNumber } from "class-validator";
+import { IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class MoviesByGenreDto{
     @IsDefined()
+    @IsNumber({}, {each: true})
+    themes_ids: number[];
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
     @IsNumber()
-    genre: string
+    @IsInt()
+    page?: number;
+
+    @IsOptional()
+    @IsDefined()
+    @IsNotEmpty()
+    @IsNumber()
+    @IsInt()
+    pageSize?: number;
 }

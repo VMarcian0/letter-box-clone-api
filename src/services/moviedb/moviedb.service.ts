@@ -5,6 +5,8 @@ import { configService } from '../../config/config.service';
 import { GenreType } from './types';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { MovieDbPaginationType } from './types/pagination.type';
+import { MovieDbMovieType } from './types/movie.type';
 
 
 @Injectable()
@@ -14,27 +16,34 @@ export class MovieDBService {
         this.config = configService.getMovieDbConfig();
     }
 
-    getGenresList(language?:string): Observable<GenreType[]> {
+    getGenresList(): Observable<GenreType[]> {
         const endpoint = `/genre/movie/list`;
         return this.http.get(
             `${this.config.baseUrl}` +
             `${endpoint}` +
             `?api_key=${this.config.apiKey}` +
-            `&language=${language ? language : this.config.defaultLanguage}`
+            `&language=${this.config.defaultLanguage}`
         )
         .pipe(
             map( response => response?.data?.genres || [] )
         )
     }
 
-    getMoviesByGenre(genre:string,language?:string): Observable<any> {
+    getMoviesByGenre(genres:number[],page:number): Observable<MovieDbPaginationType<MovieDbMovieType>> {
         const endpoint = `/discover/movie`;
+        console.log(            `${this.config.baseUrl}` +
+        `${endpoint}` +
+        `?api_key=${this.config.apiKey}` +
+        `&language=${this.config.defaultLanguage}` +
+        `&with_genres=${genres}` +
+        `&page=${page}`)
         return this.http.get(
             `${this.config.baseUrl}` +
             `${endpoint}` +
             `?api_key=${this.config.apiKey}` +
-            `&language=${language ? language : this.config.defaultLanguage}` +
-            `&with_genres=${+genre}`
+            `&language=${this.config.defaultLanguage}` +
+            `&with_genres=${genres}` +
+            `&page=${page}`
         )
         .pipe(
             map( response => response?.data )
