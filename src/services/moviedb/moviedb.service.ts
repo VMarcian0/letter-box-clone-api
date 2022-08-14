@@ -16,6 +16,10 @@ export class MovieDBService {
         this.config = configService.getMovieDbConfig();
     }
 
+    getDefaultPageSize(): number {
+        return this.config.defaultPageSize;
+    }
+
     getGenresList(): Observable<GenreType[]> {
         const endpoint = `/genre/movie/list`;
         return this.http.get(

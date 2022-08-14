@@ -54,9 +54,10 @@ class ConfigService {
 
   public getMovieDbConfig(): MovieDbConfigType{
     const config : MovieDbConfigType = {
-      apiKey:this.getValue('MOVIE_DB_APIKEY'),
-      baseUrl:this.getValue('MOVIE_DB_BASEURL'),
-      defaultLanguage:this.getValue('MOVIE_DB_DEFAULT_LANGUAGE')
+      apiKey: this.getValue('MOVIE_DB_APIKEY'),
+      baseUrl: this.getValue('MOVIE_DB_BASEURL'),
+      defaultLanguage: this.getValue('MOVIE_DB_DEFAULT_LANGUAGE'),
+      defaultPageSize: +this.getValue('MOVIE_DB_DEFAULT_PAGE_SIZE')
     }
     return config;
   } 
@@ -79,6 +80,7 @@ const configService = new ConfigService(process.env)
     'MOVIE_DB_BASEURL',
     'MOVIE_DB_APIKEY',
     'MOVIE_DB_DEFAULT_LANGUAGE',
+    'MOVIE_DB_DEFAULT_PAGE_SIZE'
   ]);
 
 export { configService };
