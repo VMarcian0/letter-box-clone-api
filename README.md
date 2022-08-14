@@ -71,8 +71,7 @@ $ npm run start:dev
 ```
 
 ## :construction: Test :construction:
-#### :construction: :construction:
-Currently all the tests are all falling.
+Currently all the tests are falling.
 ```bash
 # unit tests
 $ npm run test
