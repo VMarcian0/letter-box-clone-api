@@ -1,7 +1,9 @@
 import { Controller, Get, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { MoviesByGenreDto } from './dto/movies-by-genre.dto';
 import { MoviesService } from './movies.service';
 
+@ApiTags(`movies`)
 @Controller('movies')
 export class MoviesController {
     constructor(private moviesService: MoviesService){}

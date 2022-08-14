@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "class-validator";
 /**
@@ -7,6 +8,9 @@ import { IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "cl
 export class MoviesByGenreDto{
     //TODO: There is room for improvement in here -> validate a array of numbers with regex
     //TODO: Treat the numbers to be int
+    @ApiProperty({
+        description: "Coma separated numbers"
+    })
     @IsDefined()
     @IsNotEmpty()
     @Transform(({value}) => {
@@ -21,9 +25,9 @@ export class MoviesByGenreDto{
         return [+value];
     })
     @IsNumber({}, {each: true})
-    @Min(1)
     themes_ids: number[];
 
+    @ApiProperty({required:false})
     @IsOptional()
     @IsDefined()
     @IsNotEmpty()
@@ -32,6 +36,7 @@ export class MoviesByGenreDto{
     @IsInt()
     page: number;
 
+    @ApiProperty({required:false})
     @IsOptional()
     @IsDefined()
     @IsNotEmpty()
