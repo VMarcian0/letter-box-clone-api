@@ -13,9 +13,7 @@ export class MoviesController {
 
     @Get('/byGenre')
     @UsePipes(new ValidationPipe({ transform: true, transformOptions: { enableImplicitConversion: true } }))
-    getMovieByGenre(
-        @Query() queryParams : MoviesByGenreDto
-    ){
+    getMovieByGenre(@Query() queryParams : MoviesByGenreDto){
         return this.moviesService.getMoviesByGenre(queryParams);
     }
 }
