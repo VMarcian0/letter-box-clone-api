@@ -1,8 +1,12 @@
 import { Transform } from "class-transformer";
-import { IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, Max } from "class-validator";
-
+import { IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "class-validator";
+/**
+ * Here I made some conversions
+ * As all the parameters were strings i made the transformations
+ */
 export class MoviesByGenreDto{
-    // There is room for improvement in here -> validate a array of numbers with regex
+    //TODO: There is room for improvement in here -> validate a array of numbers with regex
+    //TODO: Treat the numbers to be int
     @IsDefined()
     @IsNotEmpty()
     @Transform(({value}) => {
@@ -14,9 +18,10 @@ export class MoviesByGenreDto{
             value.split(',').map( (i) => values.push(+i))
             return values;
         }
-        return +value
+        return [+value];
     })
     @IsNumber({}, {each: true})
+    @Min(1)
     themes_ids: number[];
 
     @IsOptional()
@@ -34,5 +39,6 @@ export class MoviesByGenreDto{
     @IsNumber()
     @IsInt()
     @Max(20)
+    @Min(1)
     pageSize: number;
 }
