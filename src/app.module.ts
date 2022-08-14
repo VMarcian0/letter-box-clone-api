@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { MovieDBService } from './services/moviedb/moviedb.service';
 import { HttpModule } from '@nestjs/axios';
 import { MoviesController } from './movies/movies.controller';
+import { MoviesService } from './movies/movies.service';
 
 
 @Module({
@@ -23,6 +24,6 @@ import { MoviesController } from './movies/movies.controller';
     HttpModule
   ],
   controllers: [AppController, MoviesController],
-  providers: [AppService, MovieDBService],
+  providers: [AppService, MovieDBService, MoviesService],
 })
 export class AppModule {}

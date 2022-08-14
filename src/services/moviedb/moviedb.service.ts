@@ -35,12 +35,6 @@ export class MovieDBService {
 
     getMoviesByGenre(genres:number[],page:number): Observable<MovieDbPaginationType<MovieDbMovieType>> {
         const endpoint = `/discover/movie`;
-        console.log(            `${this.config.baseUrl}` +
-        `${endpoint}` +
-        `?api_key=${this.config.apiKey}` +
-        `&language=${this.config.defaultLanguage}` +
-        `&with_genres=${genres}` +
-        `&page=${page}`)
         return this.http.get(
             `${this.config.baseUrl}` +
             `${endpoint}` +
