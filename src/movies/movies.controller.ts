@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { MoviesByGenreDto } from './dto/movies-by-genre.dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { MovieByGenreResponseDto, MoviesByGenreQueryDto } from './dto/movies-by-genre.dto';
 import { MoviesService } from './movies.service';
 
 @ApiTags(`movies`)
@@ -13,9 +13,12 @@ export class MoviesController {
         return this.moviesService.getGenres();
     }
 
+    @ApiOkResponse({
+        type: MovieByGenreResponseDto
+    })
     @Get('/byGenre')
     @UsePipes(new ValidationPipe({ transform: true, transformOptions: { enableImplicitConversion: true } }))
-    getMovieByGenre(@Query() queryParams : MoviesByGenreDto){
+    getMovieByGenre(@Query() queryParams : MoviesByGenreQueryDto){
         return this.moviesService.getMoviesByGenre(queryParams);
     }
 }

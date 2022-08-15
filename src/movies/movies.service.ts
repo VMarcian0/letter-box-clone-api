@@ -3,7 +3,7 @@ import { combineLatest, map, Observable } from 'rxjs';
 import { MovieDBService } from '../services/moviedb/moviedb.service';
 import { MovieDbMovieType } from '../services/moviedb/types/movie.type';
 import { MovieDbPaginationType } from '../services/moviedb/types/pagination.type';
-import { MoviesByGenreDto } from './dto/movies-by-genre.dto';
+import { MoviesByGenreQueryDto } from './dto/movies-by-genre.dto';
 
 @Injectable()
 export class MoviesService {
@@ -14,15 +14,15 @@ export class MoviesService {
     }
 
 
-    getMoviesByGenre(queryParams : MoviesByGenreDto){
+    getMoviesByGenre(queryParams : MoviesByGenreQueryDto){
         /**
          * Assuming that all the results are one array to make the pagination
          * Avoiding over fetching - the moviedb has request limit of many recurrent requests
          * Because of that I'm making the max page size equal to the pagesize used by moviedb
          * For the moment it is 20 
          */
-        const pageSize = queryParams.pageSize;
         const defaultPageSize = this.movieDBService.getDefaultPageSize();
+        const pageSize = queryParams?.pageSize || defaultPageSize;
         const pageNumber = queryParams?.page || 1;
         /**
          * Supondo um array com todos os retornos possiveis,
@@ -46,7 +46,8 @@ export class MoviesService {
          */
         let observables : Observable<MovieDbPaginationType<MovieDbMovieType>>[] = [];
         for(let page = pagesToFetch.start; page<= pagesToFetch.end; page++){
-            observables.push(this.movieDBService.getMoviesByGenre(queryParams.themes_ids, page))
+            if (page > 0)
+                observables.push(this.movieDBService.getMoviesByGenre(queryParams.themes_ids, page))
         }
 
         /**
@@ -65,7 +66,9 @@ export class MoviesService {
             .pipe(
                 map( (response) => {
                     let resultAccumulator : MovieDbMovieType[] = []  
-                    response.map(( r )=> {resultAccumulator = [...resultAccumulator, ...r.results]});
+                    response.map( ( r ) => {
+                        resultAccumulator = [...resultAccumulator, ...r.results]
+                    });
                     return {
                         'total': response[0].total_results,
                         'total_pages': Math.ceil(response[0].total_results/pageSize),
